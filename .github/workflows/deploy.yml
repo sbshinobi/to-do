@@ -24,10 +24,5 @@ jobs:
       run: npm install -g pm2
 
     - name: "Deploy to server"
-      run: |
-        pm2 describe todo-app > /dev/null
-        if [ $? -eq 0 ]; then
-          pm2 restart todo-app
-        else
-          pm2 start "serve -s build -l 3000" --name todo-app
-        fi
+      run: pm2 start "serve -s build -l 3000" --name todo-app
+
