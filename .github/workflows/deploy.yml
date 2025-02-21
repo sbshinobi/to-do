@@ -1,0 +1,33 @@
+name: Deploy
+
+on: workflow_dispatch
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22.x'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build
+
+    - name: "Install pm2"
+      run: npm install -g pm2
+
+    - name: Deploy
+      run: |
+        pm2 describe todo-app > /dev/null
+        if [ $? -eq 0 ]; then
+          pm2 restart todo-app
+        else
+          pm2 start "serve -s build -l 3000" --name todo-app
+        fi
