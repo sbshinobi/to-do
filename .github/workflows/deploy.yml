@@ -1,4 +1,4 @@
-name: Deploy
+name: "Deploy"
 
 on: workflow_dispatch
 jobs:
@@ -6,24 +6,24 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - name: Checkout code
+    - name: "Checkout code"
       uses: actions/checkout@v4
 
-    - name: Set up Node.js
+    - name: "Set up Node.js"
       uses: actions/setup-node@v4
       with:
         node-version: '22.x'
 
-    - name: Install dependencies
+    - name: "Install dependencies"
       run: npm install
 
-    - name: Build project
+    - name: "Build project"
       run: npm run build
 
     - name: "Install pm2"
       run: npm install -g pm2
 
-    - name: Deploy
+    - name: "Deploy to server"
       run: |
         pm2 describe todo-app > /dev/null
         if [ $? -eq 0 ]; then
